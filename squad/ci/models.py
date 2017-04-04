@@ -72,5 +72,5 @@ class TestJob(models.Model):
     last_fetch_attempt = models.DateTimeField(null=True, default=None, blank=True)
 
     # output
-    job_id = models.CharField(null=True, max_length=128)
-    job_status = models.CharField(null=True, max_length=128)
+    job_id = models.CharField(null=True, max_length=128, blank=True)
+    job_status = models.CharField(null=True, max_length=128, blank=True)
