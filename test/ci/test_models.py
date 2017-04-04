@@ -83,7 +83,11 @@ class BackendFetchTest(BackendTestBase):
 
     @patch('django.utils.timezone.now', return_value=NOW)
     @patch('squad.ci.models.Backend.get_implementation')
-    def test_really_fetch(self, impl, __now__):
+    def test_really_fetch(self, get_implementation, __now__):
+        impl = MagicMock()
+        impl.fetch = MagicMock()
+        get_implementation.return_value = impl
+
         test_job = self.create_test_job()
         self.backend.really_fetch(test_job)
 
@@ -91,13 +95,18 @@ class BackendFetchTest(BackendTestBase):
         self.assertEqual(NOW, test_job.last_fetch_attempt)
         self.assertTrue(test_job.fetched)
 
+        get_implementation.assert_called()
+        impl.fetch.assert_called()
+
 
 class BackendSubmitTest(BackendTestBase):
 
     @patch('squad.ci.models.Backend.get_implementation')
-    def test_submit(self, impl):
+    def test_submit(self, get_implementation):
         test_job = self.create_test_job()
+        impl = MagicMock()
         impl.submit = MagicMock(return_value='999')
+        get_implementation.return_value = impl
 
         self.backend.submit(test_job)
         test_job.refresh_from_db()

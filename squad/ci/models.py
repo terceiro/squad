@@ -41,13 +41,13 @@ class Backend(models.Model):
             self.really_fetch(test_job)
 
     def really_fetch(self, test_job):
-        self.get_implementation.fetch(test_job)
+        self.get_implementation().fetch(test_job)
         test_job.last_fetch_attempt = timezone.now()
         test_job.fetched = True
         test_job.save()
 
     def submit(self, test_job):
-        test_job.job_id = self.get_implementation.submit(test_job)
+        test_job.job_id = self.get_implementation().submit(test_job)
         test_job.submitted = True
         test_job.save()
 
