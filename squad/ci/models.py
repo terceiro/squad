@@ -23,7 +23,6 @@ class Backend(models.Model):
         default='null',
     )
     poll_interval = models.IntegerField(default=60)  # minutes
-    last_poll = models.DateTimeField(null=True, default=None, blank=True)
 
     def get_implementation(self):
         return get_backend_implementation(self)
@@ -34,7 +33,7 @@ class Backend(models.Model):
 
 class TestJob(models.Model):
     # input
-    backend = models.ForeignKey(Backend)
+    backend = models.ForeignKey(Backend, related_name='test_jobs')
     target = models.ForeignKey(Project)
     build = VersionField()
     environment = models.CharField(max_length=100, validators=[slug_validator])
@@ -43,6 +42,7 @@ class TestJob(models.Model):
     # control
     submitted = models.BooleanField(default=False)
     fetched = models.BooleanField(default=False)
+    last_fetch_attempt = models.DateTimeField(null=True, default=None, blank=True)
 
     # output
     job_id = models.CharField(null=True, max_length=128)
