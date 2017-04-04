@@ -25,9 +25,6 @@ class Backend(BaseBackend):
             data['results'] = yaml.load(yamldata)
         return self.__parse_results__(data)
 
-    def poll(self):
-        pass  # TODO
-
     def listen(self):
         pass  # TODO
 

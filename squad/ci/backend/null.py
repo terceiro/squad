@@ -36,13 +36,3 @@ class Backend(object):
         the received data is up to each specific backend implementation.
         """
         pass
-
-    def poll(self):
-        """
-        Polls the backend service for new data (test results, etc). This will
-        be called periodically in a background process.
-
-        This method must return a list of job ids. The background process will
-        schedule a fetch() call for each of the returned job ids.
-        """
-        pass
